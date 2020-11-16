@@ -1,0 +1,51 @@
+#!/usr/bin/env amm
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright © 2020 Florian Schmaus
+
+import $ivy.`org.igniterealtime.smack:smack-java8-full:4.4.0-rc1`
+import $ivy.`dev.dirs:directories:20`
+
+import scala.io.Source
+
+import java.io.File
+
+import org.jxmpp.jid.impl.JidCreate
+
+import org.jivesoftware.smack.tcp.XMPPTCPConnection
+import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration
+
+import dev.dirs.ProjectDirectories
+
+@main
+def main(recipient: String, message: String, credfile: String = "auto") {
+  val recipientJid = JidCreate.from(recipient)
+
+  val projectDirectories = ProjectDirectories.from(
+    "eu.geekplace", "Geekplace", "sendxmpp"
+  )
+  val configDir = new File(projectDirectories.configDir)
+  val credfile = new File(configDir, "credentials")
+  println(s"credfile: $credfile")
+
+  val credfileLines = Source.fromFile(credfile).getLines
+  val myJid = JidCreate.entityBareFrom(credfileLines.next)
+  val password = credfileLines.next
+
+  val config = XMPPTCPConnectionConfiguration.builder()
+    .setXmppAddressAndPassword(myJid, password)
+    .build()
+
+  val connection = new XMPPTCPConnection(config)
+
+  connection.connect.login
+
+  val messageStanza = connection.getStanzaFactory
+    .buildMessageStanza
+    .to(recipientJid)
+    .setBody(message)
+    .build
+
+  connection.sendStanza(messageStanza)
+
+  connection.disconnect
+}
