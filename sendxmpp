@@ -1,6 +1,6 @@
 #!/usr/bin/env amm
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright © 2020 Florian Schmaus
+// Copyright © 2020-2021 Florian Schmaus
 
 import $ivy.`org.igniterealtime.smack:smack-java8-full:4.4.0-rc1`
 import $ivy.`dev.dirs:directories:20`
