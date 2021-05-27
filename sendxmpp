@@ -42,15 +42,17 @@ def main(recipient: String, message: String, credfile: String = "auto") {
 
   val connection = new XMPPTCPConnection(config)
 
-  connection.connect.login
+  try {
+    connection.connect.login
 
-  val messageStanza = connection.getStanzaFactory
-    .buildMessageStanza
-    .to(recipientJid)
-    .setBody(message)
-    .build
+    val messageStanza = connection.getStanzaFactory
+      .buildMessageStanza
+      .to(recipientJid)
+      .setBody(message)
+      .build
 
-  connection.sendStanza(messageStanza)
-
-  connection.disconnect
+    connection.sendStanza(messageStanza)
+  } finally {
+    connection.disconnect
+  }
 }
