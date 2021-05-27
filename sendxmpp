@@ -16,6 +16,11 @@ import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration
 
 import dev.dirs.ProjectDirectories
 
+// Initialize Smack.
+org.jivesoftware.smack.SmackConfiguration.getVersion()
+// Remove the BC provider after Smack was initialized.
+java.security.Security.removeProvider("BC")
+
 @main
 def main(recipient: String, message: String, credfile: String = "auto") {
   val recipientJid = JidCreate.from(recipient)
