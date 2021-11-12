@@ -32,7 +32,11 @@ def main(recipient: String, message: String, credfile: String = "auto") {
   )
   val configDir = new File(projectDirectories.configDir)
   val credfile = new File(configDir, "credentials")
-  println(s"credfile: $credfile")
+
+  if (!credfile.isFile) {
+    System.err.println(s"No credentials file found at ${credfile}")
+    System.exit(1)
+  }
 
   val credfileLines = Source.fromFile(credfile).getLines
   val myJid = JidCreate.entityBareFrom(credfileLines.next)
