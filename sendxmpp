@@ -44,14 +44,14 @@ def main(recipient: String, message: String, credfile: String = "auto") {
 
   val connection = new XMPPTCPConnection(config)
 
+  val messageStanza = connection.getStanzaFactory
+    .buildMessageStanza
+    .to(recipientJid)
+    .setBody(message)
+    .build
+
   try {
     connection.connect.login
-
-    val messageStanza = connection.getStanzaFactory
-      .buildMessageStanza
-      .to(recipientJid)
-      .setBody(message)
-      .build
 
     connection.sendStanza(messageStanza)
   } finally {
