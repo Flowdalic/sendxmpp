@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright © 2020-2021 Florian Schmaus
 
-import $ivy.`org.igniterealtime.smack:smack-java8-full:4.4.2`
 import $ivy.`dev.dirs:directories:20`
+import $ivy.`org.igniterealtime.smack:smack-java8-full:4.4.4`
 
 import scala.io.Source
 
