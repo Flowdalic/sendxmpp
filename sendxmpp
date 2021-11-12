@@ -42,6 +42,11 @@ def main(recipient: String, message: String, credfile: String = "auto") {
   val myJid = JidCreate.entityBareFrom(credfileLines.next)
   val password = credfileLines.next
 
+  val messageBody =
+    if (message == "-")
+      Source.fromInputStream(System.in).mkString
+    else message
+
   val config = XMPPTCPConnectionConfiguration.builder()
     .setXmppAddressAndPassword(myJid, password)
     .build()
@@ -51,7 +56,7 @@ def main(recipient: String, message: String, credfile: String = "auto") {
   val messageStanza = connection.getStanzaFactory
     .buildMessageStanza
     .to(recipientJid)
-    .setBody(message)
+    .setBody(messageBody)
     .build
 
   try {
