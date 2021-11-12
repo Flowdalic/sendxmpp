@@ -23,8 +23,12 @@ org.jivesoftware.smack.SmackConfiguration.getVersion()
 // Remove the BC provider after Smack was initialized.
 java.security.Security.removeProvider("BC")
 
-@main
-def main(recipient: String, message: String, credfile: String = "auto") {
+@main(doc ="Send an XMPP message to the provided recipient. Positional arguments are possible: the first is the XMPP address (JID) of the recipient, the second is the XMPP message (or '-' for stdin)")
+def send(
+  @arg(doc ="The XMPP address (JID) of the recipient") recipient: String,
+  @arg(doc ="The message to send. Use '-' to read message from standard input (stdin)") message: String,
+  @arg(doc ="(Optional) The file with the XMPP credentials. First line must contain the JID, the second line the password.  Default: ~/.config/sendxmpp/credentials") credfile: String = "auto"
+	) {
   val recipientJid = JidCreate.from(recipient)
 
   val projectDirectories = ProjectDirectories.from(
