@@ -20,7 +20,7 @@ import dev.dirs.ProjectDirectories
 // Initialize Smack and then remove the BC provider, as it causes
 // issues on certain Java versions.
 // TODO: Remove this once sendxmpp uses Smack 4.5 or later.
-org.jivesoftware.smack.SmackConfiguration.getVersion()
+SmackConfiguration.getVersion()
 // Remove the BC provider after Smack was initialized.
 java.security.Security.removeProvider("BC")
 
