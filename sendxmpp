@@ -11,7 +11,6 @@ import org.jxmpp.jid.impl.JidCreate
 
 import org.jivesoftware.smack._
 import org.jivesoftware.smack.tcp.XMPPTCPConnection
-import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration
 
 import dev.dirs.ProjectDirectories
 
@@ -52,11 +51,7 @@ def send(
       Source.fromInputStream(System.in).mkString
     else message
 
-  val config = XMPPTCPConnectionConfiguration.builder()
-    .setXmppAddressAndPassword(myJid, password)
-    .build()
-
-  val connection = new XMPPTCPConnection(config)
+  val connection = new XMPPTCPConnection(myJid, password)
 
   val messageStanza = connection.getStanzaFactory
     .buildMessageStanza
