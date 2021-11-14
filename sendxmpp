@@ -11,6 +11,7 @@ import java.io.File
 
 import org.jxmpp.jid.impl.JidCreate
 
+import org.jivesoftware.smack._
 import org.jivesoftware.smack.tcp.XMPPTCPConnection
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration
 
@@ -72,4 +73,38 @@ def send(
   } finally {
     connection.disconnect
   }
+}
+
+@main(doc = "Show license information")
+def license() = {
+  val license = new StringBuilder(
+"""sendxmpp - A command line tool to send XMPP messages.
+Copyright © 2021 Florian Schmaus
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+
+Used third party libraries:
+
+"""
+  )
+
+  val smackVersion = SmackConfiguration.getVersion()
+  license.append(s"Smack ${smackVersion} XMPP client library\n")
+
+  val smackNoticeStream = Smack.getNoticeStream()
+  for (line <- Source.fromInputStream(smackNoticeStream).getLines) license.append(line).append('\n')
+
+  print(license)
 }
