@@ -43,7 +43,7 @@ def send(
     System.exit(1)
   }
 
-  val credfileLines = Source.fromFile(credfile).getLines
+  val credfileLines = Source.fromFile(credfilePath.toIO).getLines
   val myJid = JidCreate.entityBareFrom(credfileLines.next)
   val password = credfileLines.next
 
