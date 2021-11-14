@@ -10,6 +10,8 @@ You can also send input from stdin by using `-` as message-to-send argument:
 $ echo "Hello from sendxmpp via stdin" | sendxmpp send user@example.org -
 ```
 
+For more information see `sendxmpp --help`.
+
 ## Configuration
 
 `sendxmpp` lookups the XMPP credentials from a file. The first line of the file must contain the XMPP address and the second line the password.
