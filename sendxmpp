@@ -7,8 +7,6 @@ import $ivy.`dev.dirs:directories:26`
 
 import scala.io.Source
 
-import java.io.File
-
 import org.jxmpp.jid.impl.JidCreate
 
 import org.jivesoftware.smack._
