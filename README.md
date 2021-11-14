@@ -1,4 +1,4 @@
-# sendxmpp - A command line tool to send XMPP messages
+# sendxmpp - A CLI to send XMPP messages
 
 ```shell
 $ sendxmpp send user@example.org "Hello from sendxmpp"
