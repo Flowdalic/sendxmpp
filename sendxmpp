@@ -31,14 +31,16 @@ def send(
 	) {
   val recipientJid = JidCreate.from(recipient)
 
-  val projectDirectories = ProjectDirectories.from(
-    "eu.geekplace", "Geekplace", "sendxmpp"
-  )
-  val configDir = new File(projectDirectories.configDir)
-  val credfile = new File(configDir, "credentials")
+  val credfilePath = if (credfile == "auto") {
+    val projectDirectories = ProjectDirectories.from(
+      "eu.geekplace", "Geekplace", "sendxmpp"
+    )
+    val configDir = os.Path(projectDirectories.configDir)
+    configDir / "credentials"
+  } else os.Path(os.FilePath(credfile), os.pwd)
 
-  if (!credfile.isFile) {
-    System.err.println(s"No credentials file found at ${credfile}")
+  if (!credfilePath.toIO.isFile) {
+    System.err.println(s"No credentials file found at ${credfilePath}")
     System.exit(1)
   }
 
