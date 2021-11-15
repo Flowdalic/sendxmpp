@@ -29,20 +29,22 @@ def send(
 	) {
   val recipientJid = JidCreate.from(recipient)
 
-  val credfilePath = if (credfile == "auto") {
-    val projectDirectories = ProjectDirectories.from(
-      "eu.geekplace", "Geekplace", "sendxmpp"
-    )
-    val configDir = os.Path(projectDirectories.configDir)
-    configDir / "credentials"
-  } else os.Path(os.FilePath(credfile), os.pwd)
+  val credfilePath = {
+    if (credfile == "auto") {
+      val projectDirectories = ProjectDirectories.from(
+        "eu.geekplace", "Geekplace", "sendxmpp"
+      )
+      val configDir = os.Path(projectDirectories.configDir)
+      configDir / "credentials"
+    } else os.Path(os.FilePath(credfile), os.pwd)
+  }.toIO
 
-  if (!credfilePath.toIO.isFile) {
+  if (!credfilePath.isFile) {
     System.err.println(s"No credentials file found at ${credfilePath}")
     System.exit(1)
   }
 
-  val credfileLines = Source.fromFile(credfilePath.toIO).getLines
+  val credfileLines = Source.fromFile(credfilePath).getLines
   val myJid = JidCreate.entityBareFrom(credfileLines.next)
   val password = credfileLines.next
 
