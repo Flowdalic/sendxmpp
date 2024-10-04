@@ -36,7 +36,7 @@ class Conf(args: Seq[String]) extends ScallopConf(args):
   )
   val credfileConverter = singleArgConverter[os.Path](toPath(_))
 
-  object Send extends Subcommand("send"):
+  object Send extends Subcommand("send", "to"):
     descr("Send an XMPP message to the provided recipient.")
     val defaultCredfile =
       val projectDirectories = ProjectDirectories.from(
