@@ -1,42 +1,44 @@
-#!/usr/bin/env amm
+#!/usr/bin/env -S scala-cli shebang
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright © 2020-2023 Florian Schmaus
-
-import $ivy.`org.igniterealtime.smack:smack-java8-full:4.4.6`
-import $ivy.`dev.dirs:directories:26`
-
+// Copyright © 2020-2024 Florian Schmaus
+//> using scala 3.5.1
+//> using dep org.igniterealtime.smack:smack-java11-full:4.5.0-beta3
+//> using dep dev.dirs:directories:26
+//> using dep org.rogach::scallop:5.1.0
+//> using dep com.lihaoyi::os-lib:0.10.7
 import scala.io.Source
 
-import org.jxmpp.jid.impl.JidCreate
-
-import org.jivesoftware.smack._
-import org.jivesoftware.smack.tcp.XMPPTCPConnection
-
 import dev.dirs.ProjectDirectories
+import org.jivesoftware.smack.*
+import org.jivesoftware.smack.tcp.XMPPTCPConnection
+import org.jxmpp.jid.*
+import org.jxmpp.jid.impl.JidCreate
+import org.rogach.scallop.*
+import os.*
 
-// Initialize Smack and then remove the BC provider, as it causes
-// issues on certain Java versions.
-// TODO: Remove this once sendxmpp uses Smack 4.5 or later.
-SmackConfiguration.getVersion()
-// Remove the BC provider after Smack was initialized.
-java.security.Security.removeProvider("BC")
+val sendxmppVersion = "1.2.0-SNAPSHOT"
 
-@main(doc =
-  "Send an XMPP message to the provided recipient. Positional arguments are possible: the first is the XMPP address (JID) of the recipient, the second is the XMPP message (or '-' for stdin)"
-)
-def send(
-    @arg(doc = "The XMPP address (JID) of the recipient") recipient: String,
-    @arg(doc =
-      "The message to send. Use '-' to read message from standard input (stdin)"
-    ) message: String,
-    @arg(doc =
-      "(Optional) The file with the XMPP credentials. First line must contain the JID, the second line the password.  Default: ~/.config/sendxmpp/credentials"
-    ) credfile: String = "auto",
-) = {
-  val recipientJid = JidCreate.from(recipient)
+// TODO: Move under Conf?
+sealed trait MessageSource
+case class IsString(message: String) extends MessageSource
+case class FromStdin() extends MessageSource
 
-  val credfilePath = {
-    if (credfile == "auto") {
+def toPath(path: String): Path = os.Path.expandUser(path, os.pwd)
+
+class Conf(args: Seq[String]) extends ScallopConf(args):
+  appendDefaultToDescription = true
+  version(s"sendxmpp ${sendxmppVersion} (Scala 3, Smack ${SmackConfiguration.getVersion()})")
+
+  val jidConverter = singleArgConverter[Jid](JidCreate.from(_))
+  val messageSourceConverter = singleArgConverter[MessageSource](_ match
+    case "-" => FromStdin()
+    case s   => IsString(s)
+  )
+  val credfileConverter = singleArgConverter[os.Path](toPath(_))
+
+  object Send extends Subcommand("send"):
+    descr("Send an XMPP message to the provided recipient.")
+    val defaultCredfile =
       val projectDirectories = ProjectDirectories.from(
         "eu.geekplace",
         "Geekplace",
@@ -44,22 +46,50 @@ def send(
       )
       val configDir = os.Path(projectDirectories.configDir)
       configDir / "credentials"
-    } else os.Path(os.FilePath(credfile), os.pwd)
-  }.toIO
+    val credfile = opt[os.Path](
+      descr =
+        "The file with the XMPP credentials. First line must contain the JID, the second line the password.",
+      default = Some(defaultCredfile),
+    )(credfileConverter)
+    val recipient =
+      trailArg[Jid](required = true, descr = "The XMPP address (JID) of the recipient")(jidConverter)
+    val message = trailArg[MessageSource](
+      required = true,
+      descr = "The message to send. Use '-' to read message from standard input (stdin)",
+    )(messageSourceConverter)
+  addSubcommand(Send)
 
-  if (!credfilePath.isFile) {
-    System.err.println(s"No credentials file found at ${credfilePath}")
+  object License extends Subcommand("license"):
+    descr("Show license information")
+  addSubcommand(License)
+
+  verify()
+
+val conf = new Conf(args)
+
+conf.subcommand match
+  case Some(s: conf.Send.type) => send(s)
+  case Some(conf.License)      => license()
+  case _ =>
+    System.err.println("ERROR: No sub-command specified, must specify one!")
+    System.err.println(conf.getHelpString())
     System.exit(1)
-  }
+
+def send(args: conf.Send.type) =
+  val recipientJid = args.recipient()
+  val credfilePath = args.credfile().toIO
+
+  if !credfilePath.isFile then
+    System.err.println(s"ERROR: No credentials file found at ${credfilePath}")
+    System.exit(1)
 
   val credfileLines = Source.fromFile(credfilePath).getLines
   val myJid = JidCreate.entityBareFrom(credfileLines.next)
   val password = credfileLines.next
 
-  val messageBody =
-    if (message == "-")
-      Source.fromInputStream(System.in).mkString
-    else message
+  val messageBody = args.message() match
+    case IsString(s) => s
+    case FromStdin() => Source.fromInputStream(System.in).mkString
 
   val connection = new XMPPTCPConnection(myJid, password)
 
@@ -68,20 +98,16 @@ def send(
     .setBody(messageBody)
     .build
 
-  try {
+  try
     connection.connect.login
 
     connection.sendStanza(messageStanza)
-  } finally {
-    connection.disconnect
-  }
-}
+  finally connection.disconnect
 
-@main(doc = "Show license information")
-def license() = {
+def license() =
   val license = new StringBuilder(
-    """sendxmpp - A command line tool to send XMPP messages.
-Copyright © 2020-2023 Florian Schmaus
+    s"""sendxmpp ${sendxmppVersion} - A command line tool to send XMPP messages
+Copyright © 2020-2024 Florian Schmaus
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -102,12 +128,7 @@ Used third party libraries:
 """
   )
 
-  val smackVersion = SmackConfiguration.getVersion()
-  license.append(s"Smack ${smackVersion} XMPP client library\n")
-
   val smackNoticeStream = Smack.getNoticeStream()
-  for (line <- Source.fromInputStream(smackNoticeStream).getLines)
-    license.append(line).append('\n')
+  for line <- Source.fromInputStream(smackNoticeStream).getLines do license.append(line).append('\n')
 
   print(license)
-}

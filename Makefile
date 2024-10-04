@@ -18,3 +18,6 @@ check-format:
 PHONY: format
 format:
 	scalafmt
+
+sendxmpp-native: sendxmpp.sc
+	scala-cli --power package --native-image --force $^ -o $@

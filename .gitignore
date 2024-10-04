@@ -1,1 +1,3 @@
-/.metals
+/.bsp/
+/.metals/
+/.scala-build/
