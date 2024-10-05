@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright © 2020-2024 Florian Schmaus
 //> using scala 3.5.1
+//> using option -deprecation
 //> using packaging.graalvmArgs "--enable-url-protocols=http,https" -H:IncludeResources=.*
 //> using dep org.igniterealtime.smack:smack-java11-full:4.5.0-beta3
 //> using dep dev.dirs:directories:26
