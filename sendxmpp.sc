@@ -67,7 +67,7 @@ class Conf(args: Seq[String]) extends ScallopConf(args):
 
   verify()
 
-val conf = new Conf(args)
+val conf = new Conf(args.toIndexedSeq)
 
 conf.subcommand match
   case Some(s: conf.Send.type) => send(s)
