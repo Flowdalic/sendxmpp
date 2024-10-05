@@ -29,7 +29,7 @@ def toPath(path: String): Path = os.Path.expandUser(path, os.pwd)
 
 class Conf(args: Seq[String]) extends ScallopConf(args):
   appendDefaultToDescription = true
-  version(s"sendxmpp ${sendxmppVersion} (Scala 3, Smack ${SmackConfiguration.getVersion()})")
+  version(s"sendxmpp ${sendxmppVersion} (Scala 3, Smack ${Smack.getVersion()})")
 
   val jidConverter = singleArgConverter[Jid](JidCreate.from(_))
   val messageSourceConverter = singleArgConverter[MessageSource](_ match
