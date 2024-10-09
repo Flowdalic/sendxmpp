@@ -7,7 +7,7 @@
 //> using dep org.igniterealtime.smack:smack-java11-full:4.5.0-beta3
 //> using dep dev.dirs:directories:26
 //> using dep org.rogach::scallop:5.1.0
-//> using dep com.lihaoyi::os-lib:0.10.7
+//> using dep com.lihaoyi::os-lib:0.11.1
 import scala.io.Source
 
 import dev.dirs.ProjectDirectories
