@@ -13,11 +13,11 @@ check-compiles:
 
 PHONY: check-format
 check-format:
-	scalafmt --test
+	scala-cli fmt --check
 
 PHONY: format
 format:
-	scalafmt
+	scala-cli fmt
 
 sendxmpp-native: sendxmpp.sc
 	scala-cli --power package --native-image --force $^ -o $@
