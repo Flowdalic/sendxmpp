@@ -20,7 +20,7 @@ The default location of the credentials file is `~/.config/sendxmpp/credentials`
 
 ## Architecture
 
-This program is implemented as [Ammonite Scala script](https://ammonite.io/#ScalaScripts) and uses the [Smack](https://igniterealtime.org/projects/smack/) XMPP library.
+This program is implemented as [Scala CLI](https://scala-cli.virtuslab.org/scripting) script and uses the [Smack](https://igniterealtime.org/projects/smack/) XMPP library.
 
 ## License
 
