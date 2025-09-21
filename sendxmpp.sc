@@ -1,7 +1,7 @@
 #!/usr/bin/env -S scala-cli shebang
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright © 2020-2024 Florian Schmaus
-//> using scala 3.5.1
+//> using scala 3.7.3
 //> using option -deprecation
 ////> using packaging.graalvmArgs "--enable-url-protocols=http,https" -H:IncludeResources=.*
 //> using dep org.igniterealtime.smack:smack-java11-full:4.5.0-beta7
