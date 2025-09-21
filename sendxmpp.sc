@@ -52,13 +52,13 @@ class Conf(args: Seq[String]) extends ScallopConf(args):
       descr =
         "The file with the XMPP credentials. First line must contain the JID, the second line the password.",
       default = Some(defaultCredfile),
-    )(credfileConverter)
+    )(using credfileConverter)
     val recipient =
-      trailArg[Jid](required = true, descr = "The XMPP address (JID) of the recipient")(jidConverter)
+      trailArg[Jid](required = true, descr = "The XMPP address (JID) of the recipient")(using jidConverter)
     val message = trailArg[MessageSource](
       required = true,
       descr = "The message to send. Use '-' to read message from standard input (stdin)",
-    )(messageSourceConverter)
+    )(using messageSourceConverter)
   addSubcommand(Send)
 
   object License extends Subcommand("license"):
