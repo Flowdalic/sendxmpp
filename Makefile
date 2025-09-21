@@ -1,21 +1,21 @@
 DEFAULT: check
 
-PHONY: install
+.PHONY: install
 install:
 	install -D --mode 755 sendxmpp "${DESTDIR}/usr/bin/sendxmpp"
 
-PHONY: check
+.PHONY: check
 check: check-compiles check-format
 
-PHONY: check-compiles
+.PHONY: check-compiles
 check-compiles:
 	./sendxmpp --help
 
-PHONY: check-format
+.PHONY: check-format
 check-format:
 	scala-cli fmt --check
 
-PHONY: format
+.PHONY: format
 format:
 	scala-cli fmt
 
