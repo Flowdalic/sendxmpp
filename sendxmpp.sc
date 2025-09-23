@@ -1,6 +1,6 @@
 #!/usr/bin/env -S scala-cli shebang
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright © 2020-2024 Florian Schmaus
+// Copyright © 2020-2025 Florian Schmaus
 //> using scala 3.7.3
 //> using option -deprecation
 ////> using packaging.graalvmArgs "--enable-url-protocols=http,https" -H:IncludeResources=.*
@@ -109,7 +109,7 @@ def send(args: conf.Send.type) =
 def license() =
   val license = new StringBuilder(
     s"""sendxmpp ${sendxmppVersion} - A command line tool to send XMPP messages
-Copyright © 2020-2024 Florian Schmaus
+Copyright © 2020-2025 Florian Schmaus
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
