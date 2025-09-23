@@ -29,7 +29,7 @@ lazy val sendxmppVersion =
   versionFiles += sendxmppLibDir / "version"
   versionFiles.view
     .filter(os.isFile(_))
-    .map(os.read(_))
+    .map(os.read(_).trim)
     .headOption
     .getOrElse("unknown")
 
