@@ -2,7 +2,7 @@ DEFAULT: check
 
 .PHONY: install
 install:
-	install -D --mode 755 sendxmpp "${DESTDIR}/usr/bin/sendxmpp"
+	install -D --mode 755 sendxmpp.sc "${DESTDIR}/usr/bin/sendxmpp"
 	install -D --mode 644 version "${DESTDIR}/var/lib/sendxmpp-scala/version"
 
 .PHONY: check
@@ -10,7 +10,7 @@ check: check-compiles check-format
 
 .PHONY: check-compiles
 check-compiles:
-	./sendxmpp --help
+	./sendxmpp.sc --help
 
 .PHONY: check-format
 check-format:
