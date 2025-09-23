@@ -4,7 +4,7 @@
 //> using scala 3.7.3
 //> using option -deprecation
 ////> using packaging.graalvmArgs "--enable-url-protocols=http,https" -H:IncludeResources=.*
-//> using dep org.igniterealtime.smack:smack-java11-full:4.5.0-beta7
+//> using dep org.igniterealtime.smack:smack-java11-full:4.5.0-beta8
 //> using dep dev.dirs:directories:26
 //> using dep org.rogach::scallop:5.2.0
 //> using dep com.lihaoyi::os-lib:0.11.5
