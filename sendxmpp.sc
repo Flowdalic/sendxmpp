@@ -8,6 +8,7 @@
 //> using dep dev.dirs:directories:26
 //> using dep org.rogach::scallop:5.2.0
 //> using dep com.lihaoyi::os-lib:0.11.5
+import scala.collection.*
 import scala.io.Source
 
 import dev.dirs.ProjectDirectories
@@ -18,7 +19,19 @@ import org.jxmpp.jid.impl.JidCreate
 import org.rogach.scallop.*
 import os.*
 
-val sendxmppVersion = "1.2.0-SNAPSHOT"
+lazy val sendxmppVersion =
+  val absoluteScriptPath = os.pwd / os.RelPath(scriptPath)
+  val scriptDir = absoluteScriptPath / os.up
+  val dotGitDir = scriptDir / ".git"
+  val sendxmppLibDir = os.root / "var" / "lib" / "sendxmpp-scala"
+  val versionFiles = new mutable.ListBuffer[os.Path]()
+  if os.isDir(dotGitDir) then versionFiles += scriptDir / "version"
+  versionFiles += sendxmppLibDir / "version"
+  versionFiles.view
+    .filter(os.isFile(_))
+    .map(os.read(_))
+    .headOption
+    .getOrElse("unknown")
 
 // TODO: Move under Conf?
 sealed trait MessageSource
