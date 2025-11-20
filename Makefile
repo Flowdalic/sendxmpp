@@ -1,4 +1,7 @@
-DEFAULT: check
+VERSION := $(shell cat version)
+
+.PHONY: all
+all: check sendxmpp-dist-$(VERSION).jar
 
 .PHONY: install
 install:
@@ -22,6 +25,12 @@ format:
 
 sendxmpp-native: sendxmpp.sc
 	scala-cli --power package --native-image --force $^ -o $@ -- --enable-url-protocols=https
+
+.PHONY: sendxmpp-dist
+sendxmpp-dist: sendxmpp-dist-$(VERSION).jar
+
+sendxmpp-dist-$(VERSION).jar: sendxmpp.sc
+	scala-cli --power package --assembly --preamble=false --force $^ -o $@
 
 # See
 # - https://github.com/VirtusLab/scala-cli/issues/3222

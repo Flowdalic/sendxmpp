@@ -5,3 +5,4 @@
 /.lock
 /sendxmpp-native
 /sendxmpp-native.build_artifacts.txt
+/sendxmpp-dist-*.jar
