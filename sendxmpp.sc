@@ -1,13 +1,13 @@
 #!/usr/bin/env -S scala-cli shebang
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright © 2020-2025 Florian Schmaus
-//> using scala 3.7.3
+//> using scala 3.7.4
 //> using option -deprecation
 ////> using packaging.graalvmArgs "--enable-url-protocols=http,https" -H:IncludeResources=.*
-//> using dep org.igniterealtime.smack:smack-java11-full:4.5.0-beta8
+//> using dep org.igniterealtime.smack:smack-java11-full:4.5.0-rc1
 //> using dep dev.dirs:directories:26
-//> using dep org.rogach::scallop:5.2.0
-//> using dep com.lihaoyi::os-lib:0.11.5
+//> using dep org.rogach::scallop:5.3.0
+//> using dep com.lihaoyi::os-lib:0.11.6
 import scala.collection.*
 import scala.io.Source
 
