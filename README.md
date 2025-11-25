@@ -1,5 +1,7 @@
 # sendxmpp - A CLI to send XMPP messages
 
+The following assumes that `sendxmpp.sc` is installed as `sendxmpp`.
+
 ```shell
 $ sendxmpp send user@example.org "Hello from sendxmpp"
 ```
@@ -14,7 +16,7 @@ For more information see `sendxmpp --help`.
 
 ## Configuration
 
-`sendxmpp` lookups the XMPP credentials from a file. The first line of the file must contain the XMPP address and the second line the password.
+`sendxmpp` looks up the XMPP credentials from a file. The first line of the file must contain the XMPP address and the second line the password.
 
 The default location of the credentials file is `~/.config/sendxmpp/credentials`.
 
