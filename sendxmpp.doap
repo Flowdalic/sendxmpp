@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns="http://usefulinc.com/ns/doap#"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:foaf="http://xmlns.com/foaf/0.1/"
+         xmlns:xmpp="https://linkmauve.fr/ns/xmpp-doap#"
+         xmlns:schema="https://schema.org/">
+  <Project>
+    <name>sendxmpp</name>
+    <created>2020-11-16</created>
+    <shortdesc xml:lang="en">A CLI to send XMPP messages</shortdesc>
+    <description xml:lang="en">sendxmpp is a command line tool to send XMPP messages. It is implemented as Scala CLI script and uses the Smack XMPP library.</description>
+    <homepage rdf:resource="https://github.com/Flowdalic/sendxmpp"/>
+    <bug-database rdf:resource="https://github.com/Flowdalic/sendxmpp/issues"/>
+    <download-page rdf:resource="https://github.com/Flowdalic/sendxmpp/releases"/>
+    <license rdf:resource="https://spdx.org/licenses/GPL-3.0-or-later.html"/>
+    <language>en</language>
+    <programming-language>Scala</programming-language>
+    <category rdf:resource="https://linkmauve.fr/ns/xmpp-doap#category-client"/>
+    <os>Linux</os>
+    <os>macOS</os>
+    <os>Windows</os>
+
+    <repository>
+      <GitRepository>
+        <browse rdf:resource="https://github.com/Flowdalic/sendxmpp"/>
+        <location rdf:resource="https://github.com/Flowdalic/sendxmpp.git"/>
+      </GitRepository>
+    </repository>
+
+    <maintainer>
+      <foaf:Person>
+        <foaf:name>Florian Schmaus</foaf:name>
+        <foaf:homepage rdf:resource="https://geekplace.eu"/>
+      </foaf:Person>
+    </maintainer>
+
+    <implements rdf:resource="https://xmpp.org/rfcs/rfc6120.html"/>
+    <implements rdf:resource="https://xmpp.org/rfcs/rfc6121.html"/>
+    <implements rdf:resource="https://xmpp.org/rfcs/rfc7622.html"/>
+
+    <release>
+      <Version>
+        <revision>1.2.1</revision>
+        <created>2025-11-25</created>
+        <file-release rdf:resource="https://github.com/Flowdalic/sendxmpp/releases/download/1.2.1/sendxmpp-dist-1.2.1.jar"/>
+      </Version>
+    </release>
+    <release>
+      <Version>
+        <revision>1.2.0</revision>
+        <created>2024-10-09</created>
+      </Version>
+    </release>
+    <release>
+      <Version>
+        <revision>1.1.1</revision>
+        <created>2021-11-14</created>
+      </Version>
+    </release>
+    <release>
+      <Version>
+        <revision>1.1.0</revision>
+        <created>2021-11-14</created>
+      </Version>
+    </release>
+    <release>
+      <Version>
+        <revision>1.0.0</revision>
+        <created>2021-11-12</created>
+      </Version>
+    </release>
+  </Project>
+</rdf:RDF>
