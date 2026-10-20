@@ -20,7 +20,7 @@ import org.rogach.scallop.*
 import os.*
 
 lazy val sendxmppVersion =
-  val absoluteScriptPath = os.pwd / os.RelPath(scriptPath)
+  val absoluteScriptPath = os.Path(scriptPath, os.pwd)
   val scriptDir = absoluteScriptPath / os.up
   val dotGitDir = scriptDir / ".git"
   val sendxmppLibDir = os.root / "var" / "lib" / "sendxmpp-scala"
