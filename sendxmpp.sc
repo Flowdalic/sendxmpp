@@ -143,7 +143,7 @@ def send(args: conf.Send.type) =
 def license() =
   val license = new StringBuilder(
     s"""sendxmpp ${sendxmppVersion} - A command line tool to send XMPP messages
-Copyright © 2020-2025 Florian Schmaus
+Copyright © 2020-2026 Florian Schmaus
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
