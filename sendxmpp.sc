@@ -92,15 +92,21 @@ conf.subcommand match
 
 def send(args: conf.Send.type) =
   val recipientJid = args.recipient()
-  val credfilePath = args.credfile().toIO
+  val credfilePath = args.credfile()
 
-  if !credfilePath.isFile then
+  if !os.isFile(credfilePath) then
     System.err.println(s"ERROR: No credentials file found at ${credfilePath}")
     System.exit(1)
 
-  val credfileLines = Source.fromFile(credfilePath).getLines
-  val myJid = JidCreate.entityBareFrom(credfileLines.next)
-  val password = credfileLines.next
+  val credfileLines = os.read.lines(credfilePath)
+  if credfileLines.size < 2 then
+    System.err.println(
+      s"ERROR: Credentials file ${credfilePath} must contain the JID on the first line and the password on the second line"
+    )
+    System.exit(1)
+
+  val myJid = JidCreate.entityBareFrom(credfileLines(0))
+  val password = credfileLines(1)
 
   val messageBody = args.message() match
     case IsString(s) => s
