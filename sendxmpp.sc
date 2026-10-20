@@ -111,7 +111,7 @@ def send(args: conf.Send.type) =
 
   val messageBody = args.message() match
     case IsString(s) => s
-    case FromStdin() => Source.fromInputStream(System.in)(using Codec.UTF8).mkString
+    case FromStdin() => Source.fromInputStream(System.in)(using Codec.UTF8).mkString.stripSuffix("\n")
 
   val connection = new XMPPTCPConnection(myJid, password)
 
