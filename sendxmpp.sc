@@ -12,6 +12,8 @@ import scala.collection.*
 import scala.io.Codec
 import scala.io.Source
 
+import java.nio.file.attribute.PosixFilePermission.*
+
 import dev.dirs.ProjectDirectories
 import org.jivesoftware.smack.*
 import org.jivesoftware.smack.tcp.XMPPTCPConnection
@@ -98,6 +100,18 @@ def send(args: conf.Send.type) =
   if !os.isFile(credfilePath) then
     System.err.println(s"ERROR: No credentials file found at ${credfilePath}")
     System.exit(1)
+
+  // os.perms() throws on file systems without POSIX permissions, e.g., NTFS on Windows.
+  val credfileSupportsPosixPerms =
+    credfilePath.toNIO.getFileSystem.supportedFileAttributeViews.contains("posix")
+  if credfileSupportsPosixPerms then
+    val credfilePerms = os.perms(credfilePath)
+    val groupOrOthersPerms =
+      Seq(GROUP_READ, GROUP_WRITE, GROUP_EXECUTE, OTHERS_READ, OTHERS_WRITE, OTHERS_EXECUTE)
+    if groupOrOthersPerms.exists(credfilePerms.contains) then
+      System.err.println(
+        s"WARNING: Credentials file ${credfilePath} is accessible by others (${credfilePerms}), consider 'chmod 600 ${credfilePath}'"
+      )
 
   val credfileLines = os.read.lines(credfilePath)
   if credfileLines.size < 2 then
