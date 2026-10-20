@@ -116,6 +116,18 @@ def run(): Unit =
     val malformedCredfile = workDir / "malformed-credentials"
     os.write(malformedCredfile, "alice@example.org\n", perms = "rw-------")
     trace(Expected.Failure, "send", "--credfile", malformedCredfile.toString, "alice@example.org", "message")
+    // Builds the message stanza and performs the DNS lookups, but fails before connecting, since the .invalid
+    // TLD never resolves (RFC 2606).
+    val unresolvableCredfile = workDir / "unresolvable-credentials"
+    os.write(unresolvableCredfile, "alice@sendxmpp-trace.invalid\npassword\n", perms = "rw-------")
+    trace(
+      Expected.Failure,
+      "send",
+      "--credfile",
+      unresolvableCredfile.toString,
+      "alice@example.org",
+      "message",
+    )
 
     // Online scenarios.
     for (credfile, recipient) <- online do
