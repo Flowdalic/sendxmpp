@@ -9,6 +9,7 @@
 //> using dep org.rogach::scallop:6.0.1
 //> using dep com.lihaoyi::os-lib:0.11.8
 import scala.collection.*
+import scala.io.Codec
 import scala.io.Source
 
 import dev.dirs.ProjectDirectories
@@ -110,7 +111,7 @@ def send(args: conf.Send.type) =
 
   val messageBody = args.message() match
     case IsString(s) => s
-    case FromStdin() => Source.fromInputStream(System.in).mkString
+    case FromStdin() => Source.fromInputStream(System.in)(using Codec.UTF8).mkString
 
   val connection = new XMPPTCPConnection(myJid, password)
 
