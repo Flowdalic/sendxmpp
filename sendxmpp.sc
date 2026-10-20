@@ -39,7 +39,7 @@ lazy val sendxmppVersion =
 // TODO: Move under Conf?
 sealed trait MessageSource
 case class IsString(message: String) extends MessageSource
-case class FromStdin() extends MessageSource
+case object FromStdin extends MessageSource
 
 def toPath(path: String): Path = os.Path.expandUser(path, os.pwd)
 
@@ -49,7 +49,7 @@ class Conf(args: Seq[String]) extends ScallopConf(args):
 
   val jidConverter = singleArgConverter[Jid](JidCreate.from(_))
   val messageSourceConverter = singleArgConverter[MessageSource](_ match
-    case "-" => FromStdin()
+    case "-" => FromStdin
     case s   => IsString(s)
   )
   val credfileConverter = singleArgConverter[os.Path](toPath(_))
@@ -125,7 +125,7 @@ def send(args: conf.Send.type) =
 
   val messageBody = args.message() match
     case IsString(s) => s
-    case FromStdin() => Source.fromInputStream(System.in)(using Codec.UTF8).mkString.stripSuffix("\n")
+    case FromStdin   => Source.fromInputStream(System.in)(using Codec.UTF8).mkString.stripSuffix("\n")
 
   val connection = new XMPPTCPConnection(myJid, password)
 
