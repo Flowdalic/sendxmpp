@@ -1,7 +1,7 @@
 #!/usr/bin/env -S scala-cli shebang
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright © 2020-2026 Florian Schmaus
-//> using scala 3.7.4
+//> using scala 3.8.4
 //> using option -deprecation
 ////> using packaging.graalvmArgs "--enable-url-protocols=http,https" -H:IncludeResources=.*
 //> using dep org.igniterealtime.smack:smack-java11-full:4.5.0
@@ -165,6 +165,6 @@ Used third party libraries:
   )
 
   val smackNoticeStream = Smack.getNoticeStream()
-  for line <- Source.fromInputStream(smackNoticeStream).getLines do license.append(line).append('\n')
+  for line <- Source.fromInputStream(smackNoticeStream).getLines() do license.append(line).append('\n')
 
   print(license)
