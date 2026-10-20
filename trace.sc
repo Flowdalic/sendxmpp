@@ -3,7 +3,8 @@
 // Copyright © 2026 Florian Schmaus
 //
 // Generate the GraalVM native-image reachability metadata of sendxmpp by
-// running sendxmpp under the native-image tracing agent.
+// running sendxmpp under the native-image tracing agent. The metadata is
+// written to native-image-metadata/, which is used by 'make sendxmpp-native'.
 //
 // The online scenarios log into a real XMPP account and send messages. The
 // credentials file (JID on the first line, password on the second line) is
@@ -38,7 +39,7 @@ val conf = new Conf(args.toIndexedSeq)
 
 val repoDir = os.Path(scriptPath, os.pwd) / os.up
 val sendxmppScript = repoDir / "sendxmpp.sc"
-val metadataDir = repoDir / "resources" / "META-INF" / "native-image" / "eu.geekplace" / "sendxmpp"
+val metadataDir = repoDir / "native-image-metadata"
 val graalvm = sys.env.getOrElse("SENDXMPP_TRACE_GRAALVM", "graalvm-community:25.0.2")
 
 case class TraceFailure(message: String) extends Exception(message)
@@ -158,7 +159,6 @@ def run(): Unit =
   println(s"Wrote ${metadataDir / "reachability-metadata.json"}")
   if online.isEmpty then
     System.err.println("WARNING: Offline tracing only, the metadata does not cover TLS, login and sending")
-  os.proc("git", "status", "--short", "--", metadataDir).call(cwd = repoDir, stdout = os.Inherit)
 
 try run()
 catch
