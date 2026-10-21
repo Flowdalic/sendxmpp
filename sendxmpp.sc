@@ -19,7 +19,8 @@ import java.nio.file.attribute.PosixFilePermission.*
 
 import dev.dirs.ProjectDirectories
 import org.jivesoftware.smack.*
-import org.jivesoftware.smack.tcp.XMPPTCPConnection
+import org.jivesoftware.smack.c2s.ModularXmppClientToServerConnection
+import org.jivesoftware.smack.c2s.ModularXmppClientToServerConnectionConfiguration
 import org.jxmpp.jid.*
 import org.jxmpp.jid.impl.JidCreate
 import org.rogach.scallop.*
@@ -130,7 +131,11 @@ def send(args: conf.Send.type) =
     case IsString(s) => s
     case FromStdin   => Source.fromInputStream(System.in)(using Codec.UTF8).mkString.stripSuffix("\n")
 
-  val connection = new XMPPTCPConnection(myJid, password)
+  // The builder adds all known connection modules, i.e., the TCP and the WebSocket transport.
+  val connectionConfiguration = ModularXmppClientToServerConnectionConfiguration.builder
+    .setXmppAddressAndPassword(myJid, password)
+    .build
+  val connection = new ModularXmppClientToServerConnection(connectionConfiguration)
 
   val messageStanza = connection.getStanzaFactory.buildMessageStanza
     .to(recipientJid)
