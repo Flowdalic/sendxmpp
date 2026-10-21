@@ -29,11 +29,13 @@ format:
 
 # Invoke native-image directly, instead of via 'scala-cli package --native-image', as scala-cli
 # caches the native image without considering changes of the reachability metadata.
+# The sun.misc.Unsafe memory access mode is fixed at build time, see the javaOpt directive in sendxmpp.sc.
 sendxmpp-native: sendxmpp-dist-$(VERSION).jar $(NATIVE_IMAGE_METADATA)
 	graalvm_home="$$(scala-cli run --quiet --jvm $(GRAALVM) -e 'println(System.getProperty("java.home"))')" && \
 	"$${graalvm_home}/bin/native-image" \
 		--no-fallback \
 		--enable-url-protocols=https \
+		-Dsun.misc.unsafe.memory.access=allow \
 		-H:ConfigurationFileDirectories="$(NATIVE_IMAGE_METADATA_DIR)" \
 		-jar $< \
 		-o $@

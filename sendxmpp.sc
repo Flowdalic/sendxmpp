@@ -8,6 +8,9 @@
 //> using dep dev.dirs:directories:26
 //> using dep org.rogach::scallop:6.0.1
 //> using dep com.lihaoyi::os-lib:0.11.8
+// scallop and os-lib are compiled with Scala < 3.8, whose lazy vals use sun.misc.Unsafe, which causes a
+// warning on JDK 24+. Unlike --sun-misc-unsafe-memory-access=allow, the system property is ignored by older JDKs.
+//> using javaOpt -Dsun.misc.unsafe.memory.access=allow
 import scala.collection.*
 import scala.io.Codec
 import scala.io.Source
